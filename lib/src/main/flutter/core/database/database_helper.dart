@@ -318,7 +318,7 @@ class DatabaseHelper {
       subscriptionExpiry: map['subscription_expiry'] != null 
           ? DateTime.parse(map['subscription_expiry']) 
           : null,
-      themeMode: ThemeMode.values.firstWhere((e) => e.name == map['theme_mode']),
+      themeMode: AppThemeMode.values.firstWhere((e) => e.name == map['theme_mode']),
       currency: map['currency'] ?? 'HKD',
       priceAlerts: map['price_alerts'] == 1,
       pushNotifications: map['push_notifications'] == 1,

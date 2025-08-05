@@ -13,6 +13,7 @@ import '../screens/collections_screen.dart';
 import '../screens/order_tracking_screen.dart';
 import 'providers/user_preferences_provider.dart';
 import 'routing/app_router.dart';
+import '../models/user_preferences.dart';
 
 class WishGoApp extends StatelessWidget {
   const WishGoApp({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class WishGoApp extends StatelessWidget {
           // Theme Configuration
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-          themeMode: _getThemeMode(userPrefs.themeMode.name),
+          themeMode: _getThemeMode(userPrefs.themeMode),
           
           // Routing
           initialRoute: AppRouter.splash,
@@ -57,13 +58,13 @@ class WishGoApp extends StatelessWidget {
     );
   }
 
-  ThemeMode _getThemeMode(String themeMode) {
-    switch (themeMode.toLowerCase()) {
-      case 'light':
+  ThemeMode _getThemeMode(AppThemeMode appThemeMode) {
+    switch (appThemeMode) {
+      case AppThemeMode.light:
         return ThemeMode.light;
-      case 'dark':
+      case AppThemeMode.dark:
         return ThemeMode.dark;
-      case 'system':
+      case AppThemeMode.system:
       default:
         return ThemeMode.system;
     }

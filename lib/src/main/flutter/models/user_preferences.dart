@@ -8,7 +8,7 @@ class UserPreferences {
   final bool isPremium;
   final SubscriptionType? subscriptionType;
   final DateTime? subscriptionExpiry;
-  final ThemeMode themeMode;
+  final AppThemeMode themeMode;
   final String currency;
   final bool priceAlerts;
   final bool pushNotifications;
@@ -22,7 +22,7 @@ class UserPreferences {
     this.isPremium = false,
     this.subscriptionType,
     this.subscriptionExpiry,
-    this.themeMode = ThemeMode.system,
+    this.themeMode = AppThemeMode.system,
     this.currency = 'HKD',
     this.priceAlerts = false,
     this.pushNotifications = true,
@@ -49,7 +49,7 @@ class UserPreferences {
     bool? isPremium,
     SubscriptionType? subscriptionType,
     DateTime? subscriptionExpiry,
-    ThemeMode? themeMode,
+    AppThemeMode? themeMode,
     String? currency,
     bool? priceAlerts,
     bool? pushNotifications,
@@ -99,7 +99,7 @@ enum SubscriptionType {
   lifetime,
 }
 
-enum ThemeMode {
+enum AppThemeMode {
   @JsonValue('light')
   light,
   @JsonValue('dark')

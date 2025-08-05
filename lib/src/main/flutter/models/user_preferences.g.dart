@@ -17,8 +17,8 @@ UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) =>
       subscriptionExpiry: json['subscriptionExpiry'] == null
           ? null
           : DateTime.parse(json['subscriptionExpiry'] as String),
-      themeMode: $enumDecodeNullable(_$ThemeModeEnumMap, json['themeMode']) ??
-          ThemeMode.system,
+      themeMode: $enumDecodeNullable(_$AppThemeModeEnumMap, json['themeMode']) ??
+          AppThemeMode.system,
       currency: json['currency'] as String? ?? 'HKD',
       priceAlerts: json['priceAlerts'] as bool? ?? false,
       pushNotifications: json['pushNotifications'] as bool? ?? true,
@@ -36,7 +36,7 @@ Map<String, dynamic> _$UserPreferencesToJson(UserPreferences instance) =>
       'isPremium': instance.isPremium,
       'subscriptionType': _$SubscriptionTypeEnumMap[instance.subscriptionType],
       'subscriptionExpiry': instance.subscriptionExpiry?.toIso8601String(),
-      'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
+      'themeMode': _$AppThemeModeEnumMap[instance.themeMode]!,
       'currency': instance.currency,
       'priceAlerts': instance.priceAlerts,
       'pushNotifications': instance.pushNotifications,
@@ -52,10 +52,10 @@ const _$SubscriptionTypeEnumMap = {
   SubscriptionType.lifetime: 'lifetime',
 };
 
-const _$ThemeModeEnumMap = {
-  ThemeMode.light: 'light',
-  ThemeMode.dark: 'dark',
-  ThemeMode.system: 'system',
+const _$AppThemeModeEnumMap = {
+  AppThemeMode.light: 'light',
+  AppThemeMode.dark: 'dark',
+  AppThemeMode.system: 'system',
 };
 
 const _$ViewModeEnumMap = {
