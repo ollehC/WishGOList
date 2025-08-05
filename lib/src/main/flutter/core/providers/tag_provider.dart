@@ -25,10 +25,10 @@ class TagProvider extends ChangeNotifier {
     return sortedTags.take(10).toList();
   }
 
-  // Get recently used tags
+  // Get recently updated tags (since we don't have lastUsed field)
   List<Tag> get recentTags {
     final sortedTags = List<Tag>.from(_tags);
-    sortedTags.sort((a, b) => b.lastUsed.compareTo(a.lastUsed));
+    sortedTags.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
     return sortedTags.take(10).toList();
   }
 
@@ -61,10 +61,9 @@ class TagProvider extends ChangeNotifier {
       // Check if tag already exists
       final existingTag = getTagByName(name);
       if (existingTag != null) {
-        // Update usage count and last used
+        // Update usage count
         final updatedTag = existingTag.copyWith(
           usageCount: existingTag.usageCount + 1,
-          lastUsed: DateTime.now(),
           updatedAt: DateTime.now(),
         );
         await updateTag(updatedTag);
@@ -77,7 +76,6 @@ class TagProvider extends ChangeNotifier {
         name: name.trim(),
         color: color ?? _generateRandomColor(),
         usageCount: 1,
-        lastUsed: DateTime.now(),
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
@@ -121,7 +119,6 @@ class TagProvider extends ChangeNotifier {
       if (tag != null) {
         final updatedTag = tag.copyWith(
           usageCount: tag.usageCount + 1,
-          lastUsed: DateTime.now(),
           updatedAt: DateTime.now(),
         );
         await updateTag(updatedTag);

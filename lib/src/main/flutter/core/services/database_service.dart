@@ -116,10 +116,14 @@ class DatabaseService {
   }
 
   // Collection CRUD operations
-  Future<Collection> insertCollection(Collection collection) async {
+  Future<Collection> createCollection(Collection collection) async {
     final db = await _dbHelper.database;
     await db.insert(DatabaseHelper.tableCollections, _collectionToMap(collection));
     return collection;
+  }
+
+  Future<Collection> insertCollection(Collection collection) async {
+    return await createCollection(collection);
   }
 
   Future<Collection> updateCollection(Collection collection) async {
@@ -156,10 +160,14 @@ class DatabaseService {
   }
 
   // Order CRUD operations
-  Future<Order> insertOrder(Order order) async {
+  Future<Order> createOrder(Order order) async {
     final db = await _dbHelper.database;
     await db.insert(DatabaseHelper.tableOrders, _orderToMap(order));
     return order;
+  }
+
+  Future<Order> insertOrder(Order order) async {
+    return await createOrder(order);
   }
 
   Future<Order> updateOrder(Order order) async {
@@ -208,10 +216,14 @@ class DatabaseService {
   }
 
   // Tag CRUD operations
-  Future<Tag> insertTag(Tag tag) async {
+  Future<Tag> createTag(Tag tag) async {
     final db = await _dbHelper.database;
     await db.insert(DatabaseHelper.tableTags, _tagToMap(tag));
     return tag;
+  }
+
+  Future<Tag> insertTag(Tag tag) async {
+    return await createTag(tag);
   }
 
   Future<Tag> updateTag(Tag tag) async {
@@ -272,6 +284,10 @@ class DatabaseService {
     );
 
     return updatedPreferences;
+  }
+
+  Future<UserPreferences> saveUserPreferences(UserPreferences preferences) async {
+    return await updateUserPreferences(preferences);
   }
 
   Future<UserPreferences?> getUserPreferences() async {

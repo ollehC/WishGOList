@@ -21,16 +21,12 @@ class UserPreferencesProvider extends ChangeNotifier {
   String? get error => _error;
 
   // Convenience getters
-  String get themeMode => _preferences.themeMode;
-  String get language => _preferences.language;
+  ThemeMode get themeMode => _preferences.themeMode;
   String get currency => _preferences.currency;
   bool get isPremium => _preferences.isPremium;
-  bool get notificationsEnabled => _preferences.notificationsEnabled;
-  bool get priceTrackingEnabled => _preferences.priceTrackingEnabled;
-  bool get analyticsEnabled => _preferences.analyticsEnabled;
-  String get defaultView => _preferences.defaultView;
-  String get sortBy => _preferences.sortBy;
-  bool get showCompletedItems => _preferences.showCompletedItems;
+  bool get notificationsEnabled => _preferences.pushNotifications;
+  bool get priceTrackingEnabled => _preferences.priceAlerts;
+  ViewMode get defaultView => _preferences.defaultViewMode;
 
   Future<void> _loadPreferences() async {
     _setLoading(true);
@@ -47,21 +43,12 @@ class UserPreferencesProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateThemeMode(String themeMode) async {
+  Future<void> updateThemeMode(ThemeMode themeMode) async {
     try {
       final updatedPrefs = _preferences.copyWith(themeMode: themeMode);
       await _savePreferences(updatedPrefs);
     } catch (e) {
       _setError('Failed to update theme: $e');
-    }
-  }
-
-  Future<void> updateLanguage(String language) async {
-    try {
-      final updatedPrefs = _preferences.copyWith(language: language);
-      await _savePreferences(updatedPrefs);
-    } catch (e) {
-      _setError('Failed to update language: $e');
     }
   }
 
@@ -76,7 +63,7 @@ class UserPreferencesProvider extends ChangeNotifier {
 
   Future<void> updateNotificationsEnabled(bool enabled) async {
     try {
-      final updatedPrefs = _preferences.copyWith(notificationsEnabled: enabled);
+      final updatedPrefs = _preferences.copyWith(pushNotifications: enabled);
       await _savePreferences(updatedPrefs);
     } catch (e) {
       _setError('Failed to update notifications: $e');
@@ -85,46 +72,19 @@ class UserPreferencesProvider extends ChangeNotifier {
 
   Future<void> updatePriceTrackingEnabled(bool enabled) async {
     try {
-      final updatedPrefs = _preferences.copyWith(priceTrackingEnabled: enabled);
+      final updatedPrefs = _preferences.copyWith(priceAlerts: enabled);
       await _savePreferences(updatedPrefs);
     } catch (e) {
       _setError('Failed to update price tracking: $e');
     }
   }
 
-  Future<void> updateAnalyticsEnabled(bool enabled) async {
+  Future<void> updateDefaultView(ViewMode view) async {
     try {
-      final updatedPrefs = _preferences.copyWith(analyticsEnabled: enabled);
-      await _savePreferences(updatedPrefs);
-    } catch (e) {
-      _setError('Failed to update analytics: $e');
-    }
-  }
-
-  Future<void> updateDefaultView(String view) async {
-    try {
-      final updatedPrefs = _preferences.copyWith(defaultView: view);
+      final updatedPrefs = _preferences.copyWith(defaultViewMode: view);
       await _savePreferences(updatedPrefs);
     } catch (e) {
       _setError('Failed to update default view: $e');
-    }
-  }
-
-  Future<void> updateSortBy(String sortBy) async {
-    try {
-      final updatedPrefs = _preferences.copyWith(sortBy: sortBy);
-      await _savePreferences(updatedPrefs);
-    } catch (e) {
-      _setError('Failed to update sort preference: $e');
-    }
-  }
-
-  Future<void> updateShowCompletedItems(bool show) async {
-    try {
-      final updatedPrefs = _preferences.copyWith(showCompletedItems: show);
-      await _savePreferences(updatedPrefs);
-    } catch (e) {
-      _setError('Failed to update completed items visibility: $e');
     }
   }
 

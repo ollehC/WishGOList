@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../models/wish_item.dart';
+import '../../models/wish_item.dart';
 import '../services/database_service.dart';
 import '../services/opengraph_service.dart';
 import 'user_preferences_provider.dart';

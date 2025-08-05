@@ -34,7 +34,7 @@ class WishItemGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserPreferencesProvider>(
       builder: (context, userPrefs, child) {
-        final effectiveViewType = _getEffectiveViewType(userPrefs.defaultView);
+        final effectiveViewType = _getEffectiveViewType(userPrefs.defaultView.name);
         
         switch (effectiveViewType) {
           case GridViewType.masonry:

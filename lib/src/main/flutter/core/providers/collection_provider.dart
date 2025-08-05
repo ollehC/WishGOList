@@ -117,9 +117,10 @@ class CollectionProvider extends ChangeNotifier {
     }).toList();
   }
 
-  List<Collection> getCollectionsByType(CollectionType type) {
-    return _collections.where((c) => c.type == type).toList();
-  }
+  // Method removed - Collection model doesn't have type field
+  // List<Collection> getCollectionsByType(CollectionType type) {
+  //   return _collections.where((c) => c.type == type).toList();
+  // }
 
   Future<void> duplicateCollection(String collectionId) async {
     try {
@@ -151,10 +152,9 @@ class CollectionProvider extends ChangeNotifier {
       final collection = _collections.removeAt(oldIndex);
       _collections.insert(newIndex, collection);
       
-      // Update the sort order in the database
+      // Update the collections in the database
       for (int i = 0; i < _collections.length; i++) {
         final updatedCollection = _collections[i].copyWith(
-          sortOrder: i,
           updatedAt: DateTime.now(),
         );
         await _databaseService.updateCollection(updatedCollection);
@@ -178,10 +178,8 @@ class CollectionProvider extends ChangeNotifier {
       name: 'My Wishlist',
       description: 'Default collection for all items',
       color: 0xFF2196F3,
-      icon: 'favorite',
-      type: CollectionType.wishlist,
+      iconName: 'favorite',
       isDefault: true,
-      sortOrder: 0,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );

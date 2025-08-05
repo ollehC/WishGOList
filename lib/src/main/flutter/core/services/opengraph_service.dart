@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
 import 'api_service.dart';
-import '../models/opengraph_metadata.dart';
+import '../../models/opengraph_metadata.dart';
 
 class OpenGraphService {
   final ApiService _apiService;

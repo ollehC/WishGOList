@@ -68,12 +68,10 @@ class OrderProvider extends ChangeNotifier {
     try {
       final order = Order(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
-        itemId: wishItem.id,
-        itemTitle: wishItem.title,
-        itemImageUrl: wishItem.imageUrl,
+        wishItemId: wishItem.id,
         orderNumber: orderNumber ?? 'ORDER-${DateTime.now().millisecondsSinceEpoch}',
         trackingNumber: trackingNumber,
-        store: store ?? wishItem.sourceStore ?? 'Unknown Store',
+        carrier: store ?? wishItem.sourceStore ?? 'Unknown Store',
         totalAmount: totalAmount ?? wishItem.price ?? 0.0,
         currency: wishItem.currency ?? 'HKD',
         status: OrderStatus.pending,
@@ -113,8 +111,7 @@ class OrderProvider extends ChangeNotifier {
       final updatedOrder = order.copyWith(
         status: status,
         updatedAt: DateTime.now(),
-        deliveredDate: status == OrderStatus.delivered ? DateTime.now() : order.deliveredDate,
-        shippedDate: status == OrderStatus.shipped ? DateTime.now() : order.shippedDate,
+        actualDelivery: status == OrderStatus.delivered ? DateTime.now() : order.actualDelivery,
       );
 
       await updateOrder(updatedOrder);
@@ -161,11 +158,11 @@ class OrderProvider extends ChangeNotifier {
   }
 
   List<Order> getOrdersByItemId(String itemId) {
-    return _orders.where((o) => o.itemId == itemId).toList();
+    return _orders.where((o) => o.wishItemId == itemId).toList();
   }
 
-  List<Order> getOrdersByStore(String store) {
-    return _orders.where((o) => o.store.toLowerCase() == store.toLowerCase()).toList();
+  List<Order> getOrdersByCarrier(String carrier) {
+    return _orders.where((o) => (o.carrier?.toLowerCase() ?? '').contains(carrier.toLowerCase())).toList();
   }
 
   List<Order> searchOrders(String query) {
@@ -173,17 +170,17 @@ class OrderProvider extends ChangeNotifier {
     
     final lowercaseQuery = query.toLowerCase();
     return _orders.where((order) {
-      return order.itemTitle.toLowerCase().contains(lowercaseQuery) ||
-             order.orderNumber.toLowerCase().contains(lowercaseQuery) ||
+      return (order.orderNumber?.toLowerCase().contains(lowercaseQuery) ?? false) ||
              (order.trackingNumber?.toLowerCase().contains(lowercaseQuery) ?? false) ||
-             order.store.toLowerCase().contains(lowercaseQuery);
+             (order.carrier?.toLowerCase().contains(lowercaseQuery) ?? false);
     }).toList();
   }
 
   List<Order> getOrdersInDateRange(DateTime start, DateTime end) {
     return _orders.where((order) {
-      return order.orderDate.isAfter(start.subtract(const Duration(days: 1))) &&
-             order.orderDate.isBefore(end.add(const Duration(days: 1)));
+      return order.orderDate != null &&
+             order.orderDate!.isAfter(start.subtract(const Duration(days: 1))) &&
+             order.orderDate!.isBefore(end.add(const Duration(days: 1)));
     }).toList();
   }
 
@@ -195,12 +192,13 @@ class OrderProvider extends ChangeNotifier {
 
     if (startDate != null && endDate != null) {
       ordersToCalculate = ordersToCalculate.where((order) => 
-          order.orderDate.isAfter(startDate.subtract(const Duration(days: 1))) &&
-          order.orderDate.isBefore(endDate.add(const Duration(days: 1)))
+          order.orderDate != null &&
+          order.orderDate!.isAfter(startDate.subtract(const Duration(days: 1))) &&
+          order.orderDate!.isBefore(endDate.add(const Duration(days: 1)))
       );
     }
 
-    return ordersToCalculate.fold(0.0, (sum, order) => sum + order.totalAmount);
+    return ordersToCalculate.fold(0.0, (sum, order) => sum + (order.totalAmount ?? 0.0));
   }
 
   Map<String, double> getSpendingByStore({DateTime? startDate, DateTime? endDate}) {
@@ -211,17 +209,19 @@ class OrderProvider extends ChangeNotifier {
 
     if (startDate != null && endDate != null) {
       ordersToCalculate = ordersToCalculate.where((order) => 
-          order.orderDate.isAfter(startDate.subtract(const Duration(days: 1))) &&
-          order.orderDate.isBefore(endDate.add(const Duration(days: 1)))
+          order.orderDate != null &&
+          order.orderDate!.isAfter(startDate.subtract(const Duration(days: 1))) &&
+          order.orderDate!.isBefore(endDate.add(const Duration(days: 1)))
       );
     }
 
-    final spendingByStore = <String, double>{};
+    final spendingByCarrier = <String, double>{};
     for (final order in ordersToCalculate) {
-      spendingByStore[order.store] = (spendingByStore[order.store] ?? 0) + order.totalAmount;
+      final carrier = order.carrier ?? 'Unknown';
+      spendingByCarrier[carrier] = (spendingByCarrier[carrier] ?? 0) + (order.totalAmount ?? 0.0);
     }
 
-    return spendingByStore;
+    return spendingByCarrier;
   }
 
   Map<OrderStatus, int> getOrderStatusCounts() {
@@ -245,7 +245,11 @@ class OrderProvider extends ChangeNotifier {
   }
 
   void _sortOrders() {
-    _orders.sort((a, b) => b.orderDate.compareTo(a.orderDate));
+    _orders.sort((a, b) {
+      final dateA = a.orderDate ?? a.createdAt;
+      final dateB = b.orderDate ?? b.createdAt;
+      return dateB.compareTo(dateA);
+    });
   }
 
   Future<void> refreshOrders() async {

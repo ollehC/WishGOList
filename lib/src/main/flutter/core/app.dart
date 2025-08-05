@@ -28,7 +28,7 @@ class WishGoApp extends StatelessWidget {
           // Theme Configuration
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-          themeMode: _getThemeMode(userPrefs.themeMode),
+          themeMode: _getThemeMode(userPrefs.themeMode.name),
           
           // Routing
           initialRoute: AppRouter.splash,

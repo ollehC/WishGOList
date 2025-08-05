@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../models/wish_item.dart';
-import '../models/collection.dart';
-import '../models/order.dart';
-import '../models/tag.dart';
-import '../models/user_preferences.dart';
+import '../../models/wish_item.dart';
+import '../../models/collection.dart';
+import '../../models/order.dart';
+import '../../models/tag.dart';
+import '../../models/user_preferences.dart';
 
 class DatabaseHelper {
   static const _databaseName = 'wishgo_list.db';
