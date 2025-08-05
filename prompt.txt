@@ -1,0 +1,43 @@
+You are a Flutter developer. Help me design and develop a cross-platform shopping wishlist app called **WishGo List**, primarily for iOS (also supports Android). This app helps users manage items they want to buy with the following objectives:
+
+- Save product URLs, extract images and source info
+- Record reasons for purchase
+- Organize, categorize, and tag items
+- Manage the full process from pre-purchase to post-purchase
+- Track orders manually
+
+---
+
+**Free Tier Features**:
+- Add items via URL with OpenGraph auto-fetch (image + title)
+- Manual edits: product name, price, notes
+- Status: To Buy / Purchased / Dropped
+- Tagging (max 5 tags)
+- Card/List View (Pinterest-like UI)
+- Local storage, no login required
+- 1 collection folder
+- Manual order/tracking number entry (max 2 entries)
+
+**Premium Features**:
+- Price tracking + drop alerts (via API)
+- Unlimited tags & multiple custom lists
+- Upload custom images & change UI theme (dark mode, icons)
+- Export (CSV, PDF, Google Sheet)
+- Firebase Firestore sync
+- *Desire Level* (1–5 hearts)
+- Batch operations
+- Unlimited order tracking (future AfterShip/17track API support)
+- Shopping analytics: trends, totals, visual charts
+
+---
+
+**UI Pages**:
+- **Home**: Product cards + add item button
+- **List + Tracking**: Filtered item list + order tracking
+- **Stats**: Shopping analytics and visual reports
+- **Settings**: Upgrade, theme, export, login/backup
+
+**Subscription**:
+- Monthly: HKD $15–25
+- Yearly: HKD $168–228
+- One-time: HKD $328–398
