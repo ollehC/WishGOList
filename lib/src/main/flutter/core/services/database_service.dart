@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'package:sqflite/sqflite.dart';
 import '../database/database_helper.dart';
-import '../models/wish_item.dart';
-import '../models/collection.dart';
-import '../models/order.dart';
-import '../models/tag.dart';
-import '../models/user_preferences.dart';
+import '../../models/wish_item.dart';
+import '../../models/collection.dart';
+import '../../models/order.dart';
+import '../../models/tag.dart';
+import '../../models/user_preferences.dart';
 
 class DatabaseService {
   late final DatabaseHelper _dbHelper;
